@@ -1,6 +1,17 @@
 import autodiff as ad
 import numpy as np
 
+def test_oneslike():
+    """Fix Executor.run"""
+    x = ad.Variable(name="x")
+    y = ad.oneslike_op(x)
+
+    executor = ad.Executor([y])
+    x_val = np.arange(12).reshape(2,2,3)*1.
+    y_val, = executor.run(feed_dict={x: x_val})
+    assert isinstance(y, ad.Node)
+    assert np.array_equal(y_val, np.ones_like(x_val))
+
 def test_identity():
     x2 = ad.Variable(name = "x2")
     y = x2

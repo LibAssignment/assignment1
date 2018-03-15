@@ -275,7 +275,11 @@ class Executor:
         node_to_val_map = dict(feed_dict)
         # Traverse graph in topological sort order and compute values for all nodes.
         topo_order = find_topo_sort(self.eval_node_list)
-        """TODO: Your code here"""
+
+        for node in topo_order:
+            if node not in node_to_val_map:
+                result = node.op.compute(node, [node_to_val_map[input] for input in node.inputs])
+                node_to_val_map[node] = result
 
         # Collect node values.
         node_val_results = [node_to_val_map[node] for node in self.eval_node_list]
