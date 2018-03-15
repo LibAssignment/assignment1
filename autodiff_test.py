@@ -12,6 +12,19 @@ def test_oneslike():
     assert isinstance(y, ad.Node)
     assert np.array_equal(y_val, np.ones_like(x_val))
 
+def test_mul():
+    """Fix Node.__mul__, MulOp.compute and MulByConstOp.compute"""
+    x = ad.Variable(name="x")
+    y1, y2 = (x+1)*x, 3*x
+
+    executor = ad.Executor([y1, y2])
+    x_val = np.arange(3.)
+    y1_val, y2_val = executor.run(feed_dict={x: x_val})
+    assert isinstance(y1, ad.Node)
+    assert isinstance(y2, ad.Node)
+    assert np.array_equal(y1_val, (x_val+1)*x_val)
+    assert np.array_equal(y2_val, 3*x_val)
+
 def test_identity():
     x2 = ad.Variable(name = "x2")
     y = x2
