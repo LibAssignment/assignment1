@@ -55,6 +55,7 @@ def test_add_by_const():
     assert np.array_equal(grad_x2_val, np.ones_like(x2_val))
 
 def test_mul_by_const():
+    """Fix MulByConstOp.gradient"""
     x2 = ad.Variable(name = "x2")
     y = 5 * x2
 
@@ -86,6 +87,7 @@ def test_add_two_vars():
     assert np.array_equal(grad_x3_val, np.ones_like(x3_val))
 
 def test_mul_two_vars():
+    """Fix MulOp.gradient"""
     x2 = ad.Variable(name = "x2")
     x3 = ad.Variable(name = "x3")
     y = x2 * x3

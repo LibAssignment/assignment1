@@ -148,7 +148,7 @@ class MulOp(Op):
 
     def gradient(self, node, output_grad):
         """Given gradient of multiply node, return gradient contributions to each input."""
-        """TODO: Your code here"""
+        return [node.inputs[1]*output_grad, node.inputs[0]*output_grad]
 
 class MulByConstOp(Op):
     """Op to element-wise multiply a nodes by a constant."""
@@ -166,7 +166,7 @@ class MulByConstOp(Op):
 
     def gradient(self, node, output_grad):
         """Given gradient of multiplication node, return gradient contribution to input."""
-        """TODO: Your code here"""
+        return [node.const_attr * output_grad]
 
 class MatMulOp(Op):
     """Op to matrix multiply two nodes."""
