@@ -26,6 +26,7 @@ def test_mul():
     assert np.array_equal(y2_val, 3*x_val)
 
 def test_identity():
+    """Fix gradients and workaround PlaceholderOp.gradient"""
     x2 = ad.Variable(name = "x2")
     y = x2
 

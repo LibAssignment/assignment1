@@ -215,7 +215,7 @@ class PlaceholderOp(Op):
 
     def gradient(self, node, output_grad):
         """No gradient function since node has no inputs."""
-        return None
+        return []
 
 class ZerosLikeOp(Op):
     """Op that represents a constant np.zeros_like."""
@@ -319,7 +319,20 @@ def gradients(output_node, node_list):
     # Traverse graph in reverse topological order given the output_node that we are taking gradient wrt.
     reverse_topo_order = reversed(find_topo_sort([output_node]))
 
-    """TODO: Your code here"""
+    for node in reverse_topo_order:
+        output_grad = None
+        for r in node_to_output_grads_list[node]:
+            if output_grad is None:
+                output_grad = r
+            else:
+                output_grad = output_grad + r
+        node_to_output_grad[node] = output_grad
+        result = node.op.gradient(node, node_to_output_grad[node])
+        assert (result is not None)
+        for i, r in zip(node.inputs, result):
+            if i not in node_to_output_grads_list:
+                node_to_output_grads_list[i] = []
+            node_to_output_grads_list[i].append(r)
 
     # Collect results for gradients requested.
     grad_node_list = [node_to_output_grad[node] for node in node_list]
