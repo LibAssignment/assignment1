@@ -193,14 +193,19 @@ class MatMulOp(Op):
 
     def compute(self, node, input_vals):
         """Given values of input nodes, return result of matrix multiplication."""
-        """TODO: Your code here"""
+        [a, b] = input_vals
+        if node.matmul_attr_trans_A:
+            a = a.transpose()
+        if node.matmul_attr_trans_B:
+            b = b.transpose()
+        return np.matmul(a, b)
 
     def gradient(self, node, output_grad):
         """Given gradient of multiply node, return gradient contributions to each input.
             
         Useful formula: if Y=AB, then dA=dY B^T, dB=A^T dY
         """
-        """TODO: Your code here"""
+        return [matmul_op(output_grad, node.inputs[1], trans_B=True), matmul_op(node.inputs[0], output_grad, trans_A=True)]
 
 class PlaceholderOp(Op):
     """Op to feed value to a nodes."""

@@ -196,6 +196,7 @@ def test_grad_of_grad():
     assert np.array_equal(grad_x2_x3_val, expected_grad_x2_x3_val)
 
 def test_matmul_two_vars():
+    """Fix MatMulOp.compute and MatMulOp.gradient"""
     x2 = ad.Variable(name = "x2")
     x3 = ad.Variable(name = "x3")
     y = ad.matmul_op(x2, x3)
